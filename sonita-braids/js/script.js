@@ -21,12 +21,12 @@ const CONFIG = {
     reviews: "https://www.google.com/maps/search/?api=1&query=Sonita+Hair+Beauty+Salon+24+Plein+Street+Cape+Town"
   },
 
-  // ---- PRICES (placeholders until the salon supplies real prices) ----
+  // ---- PRICES ----
   prices: {
     // Service cards
     "svc-hair-braiding": "",
     "svc-box-braids": "",
-    "svc-goddess-braids": "",
+    "svc-goddess-braids": "R1100",
     "svc-hair-twists": "",
     "svc-hair-extensions": "",
     "svc-hair-colouring": "",
@@ -34,12 +34,16 @@ const CONFIG = {
     "svc-hair-treatments": "",
     // Price list
     "pr-box-braids": "",
-    "pr-knotless-braids": "",
-    "pr-cornrows": "",
+    "pr-knotless-braids": "R800",
+    "pr-cornrows": "R450 upwards",
+    "pr-long-french-curly": "R1000",
+    "pr-short-french-curly": "R850",
+    "pr-short-goddess-braids": "R750",
+    "pr-fulani-braids": "R750",
     "pr-senegalese-twists": "",
     "pr-passion-twists": "",
     "pr-soft-locs": "",
-    "pr-goddess-braids": "",
+    "pr-goddess-braids": "R1100",
     "pr-boho-knotless": "",
     "pr-hair-extensions": "",
     "pr-colour-matching": "",
@@ -199,13 +203,24 @@ const CONFIG = {
   );
 
   /* ---------- Lightbox ---------- */
-  const lb = $("#lightbox"), lbImg = $("#lbImg"), lbCap = $("#lbCap");
+  const lb = $("#lightbox"), lbMedia = $("#lbMedia"), lbCap = $("#lbCap");
   let current = 0, visible = [], lastFocus = null;
   const showAt = (i) => {
     current = (i + visible.length) % visible.length;
-    const img = $("img", visible[current]);
-    lbImg.src = img.currentSrc || img.src;
-    lbImg.alt = img.alt;
+    const media = $("video", visible[current]) || $("img", visible[current]);
+    if (media && media.tagName === "VIDEO") {
+      lbMedia.src = media.currentSrc || media.src;
+      lbMedia.poster = media.poster || "";
+      lbMedia.controls = true;
+      lbMedia.hidden = false;
+      lbMedia.setAttribute("aria-label", media.getAttribute("aria-label") || "Gallery video");
+      lbMedia.play().catch(() => {});
+    } else {
+      lbMedia.pause && lbMedia.pause();
+      lbMedia.hidden = true;
+      lbMedia.removeAttribute("src");
+      lbMedia.removeAttribute("poster");
+    }
     lbCap.textContent = $("figcaption", visible[current]).textContent;
   };
   const openLb = (item) => {
@@ -219,6 +234,7 @@ const CONFIG = {
   const closeLb = () => {
     lb.hidden = true;
     document.body.style.overflow = "";
+    if (lbMedia && lbMedia.pause) lbMedia.pause();
     if (lastFocus) lastFocus.focus();
   };
   items.forEach((it) => $(".g-btn", it).addEventListener("click", () => openLb(it)));
