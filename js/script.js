@@ -202,13 +202,25 @@ const CONFIG = {
   );
 
   /* ---------- Lightbox ---------- */
-  const lb = $("#lightbox"), lbImg = $("#lbImg"), lbCap = $("#lbCap");
+  const lb = $("#lightbox"), lbImg = $("#lbImg"), lbVideo = $("#lbVideo"), lbCap = $("#lbCap");
   let current = 0, visible = [], lastFocus = null;
   const showAt = (i) => {
     current = (i + visible.length) % visible.length;
+    const video = $("video", visible[current]);
     const img = $("img", visible[current]);
-    lbImg.src = img.currentSrc || img.src;
-    lbImg.alt = img.alt;
+    lbVideo.pause();
+    lbVideo.removeAttribute("src");
+    lbVideo.replaceChildren();
+    lbImg.hidden = Boolean(video);
+    lbVideo.hidden = !video;
+    if (video) {
+      const source = $("source", video);
+      lbVideo.src = video.currentSrc || video.src || (source && source.src);
+      lbVideo.load();
+    } else {
+      lbImg.src = img.currentSrc || img.src;
+      lbImg.alt = img.alt;
+    }
     lbCap.textContent = $("figcaption", visible[current]).textContent;
   };
   const openLb = (item) => {
@@ -222,9 +234,15 @@ const CONFIG = {
   const closeLb = () => {
     lb.hidden = true;
     document.body.style.overflow = "";
+    lbVideo.pause();
+    lbVideo.removeAttribute("src");
+    lbVideo.load();
     if (lastFocus) lastFocus.focus();
   };
-  items.forEach((it) => $(".g-btn", it).addEventListener("click", () => openLb(it)));
+  items.forEach((it) => {
+    const button = $(".g-btn", it);
+    if (button) button.addEventListener("click", () => openLb(it));
+  });
   $("#lbClose").addEventListener("click", closeLb);
   $("#lbPrev").addEventListener("click", () => showAt(current - 1));
   $("#lbNext").addEventListener("click", () => showAt(current + 1));
