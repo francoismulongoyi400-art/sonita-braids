@@ -10,18 +10,18 @@ const CONFIG = {
 
   hours: {
     short: "Open 24 hours",
-    long: "Open 24 hours (per our Google listing). Please confirm your appointment time with us."
+    long: "Open 24 hours (per our Google listing). Please confirm your appointment time with us." 
   },
 
   links: {
-    instagram: "https://www.instagram.com/sunita_braids/",
+    instagram: "https://www.instagram.com/sunita_braids/", 
     tiktok: "https://www.tiktok.com/@sonitabraids",
     directions: "https://www.google.com/maps/search/?api=1&query=Sonita+Hair+Beauty+Salon+24+Plein+Street+Cape+Town",
     // Replace with the salon's direct Google "write a review" link when available
     reviews: "https://www.google.com/maps/search/?api=1&query=Sonita+Hair+Beauty+Salon+24+Plein+Street+Cape+Town"
   },
 
-  // ---- PRICES (placeholders until the salon supplies real prices) ----
+  // ---- PRICES ----
   prices: {
     // Service cards
     "svc-hair-braiding": "",
@@ -34,12 +34,15 @@ const CONFIG = {
     "svc-hair-treatments": "",
     // Price list
     "pr-box-braids": "",
-    "pr-knotless-braids": "",
-    "pr-cornrows": "",
-    "pr-senegalese-twists": "",
+    "pr-knotless-braids": "R800",
+    "pr-cornrows": "R450 upwards",
+    "pr-long-french-curly": "R1000",
+    "pr-short-french-curly": "R850",
+    "pr-short-goddess-braids": "R750",
+    "pr-fulani-braids": "R750",
     "pr-passion-twists": "",
     "pr-soft-locs": "",
-    "pr-goddess-braids": "",
+    "pr-goddess-braids": "R1100",
     "pr-boho-knotless": "",
     "pr-hair-extensions": "",
     "pr-colour-matching": "",
